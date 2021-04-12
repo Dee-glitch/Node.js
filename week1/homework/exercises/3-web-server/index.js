@@ -1,3 +1,2 @@
-document
-  .getElementById("content")
-  .appendChild(document.createTextNode("Welcome to Server-land!"));
+const content = document.getElementById("content");
+ content.textContent = "Welcome to Server-land!";

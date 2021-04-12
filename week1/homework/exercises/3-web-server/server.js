@@ -14,9 +14,8 @@ let server = http.createServer(function (req, res) {
 				console.log(error);
 				res.end();
 			} else {
-				res.setHeader("Content-Type", "text/javascript")
-				res.write(data);// Sends a response back to the client
-				res.end();// Ends the response
+				res.writeHead(200, {"Content-Type": "text/javascript"})
+				res.end(data);
 			}
 		})
 	} 
@@ -27,9 +26,8 @@ let server = http.createServer(function (req, res) {
 					console.log(error);
 					res.end();
 				} else {
-					res.setHeader('Content-Type', 'text/css');
-					res.write(data);
-					res.end();
+					res.writeHead(200, {"Content-Type": "text/css"});
+					res.end(data);
 				}
 		})
 	} 
@@ -40,9 +38,8 @@ let server = http.createServer(function (req, res) {
 				console.log(error);
 				res.end();
 			} else {
-				res.setHeader("Content-Type", "text/html");
-				res.write(data);
-				res.end();
+				res.writeHead(200, {"Content-Type": "text/html"});
+				res.end(data);
 			}
     });
   }
