@@ -9,7 +9,10 @@ app.use(express.json());
 app.post('/blogs', function (req, res) {
   const title = req.body.title;
   const content = req.body.content;
-
+  // What if the request does not have a title and/or content?
+  if (!title || !content) {
+    return res.status(400).send({ msg: 'Include a title and content'})
+  }
   res.writeHead(200,{'Content-Type':'application/json'});
   fs.writeFileSync(title, content);
   res.end('ok');
@@ -17,12 +20,15 @@ app.post('/blogs', function (req, res) {
 
 app.put('/posts/:title', (req, res) => {
   // How to get the title and content from the request?
-  // What if the request does not have a title and/or content?
   const title = req.params.title;
+  const content = req.body.content;
+  // What if the request does not have a title and/or content?
   if (fs.existsSync(title)) {
-    const content = req.body.content;
+    if (!title || !content) {
+      return res.status(400).json({ msg: 'Include a title and content'})
+    }
     fs.writeFileSync(title, content);
-    res.end('ok');
+    res.status(200).end('ok');
   }
   else {
     // Send response with error message
@@ -35,7 +41,7 @@ app.delete('/blogs/:title', (req, res) => {
   const title = req.params.title;
   if (fs.existsSync(title)) { // Add condition here
     fs.unlinkSync(title);
-    res.end('ok');
+    res.status(200).end('ok');
   } else {
     // Respond with message here
     res.status(404).send('This blog post does not exist!');
@@ -48,7 +54,7 @@ app.get('/blogs/:title', (req, res) => {
   if (fs.existsSync(title)) {
     const post = fs.readFileSync(title);
     // send response
-    res.send(post);
+    res.status(200).send(post);
   } else {
     res.status(404).send('This blog post does not exist!');
   }
