@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'handlebars');
 app.engine('handlebars', exphbs({ defaultLayout: false }));
 
-app.get('/', (req, res) => res.render('index'));
+app.get('/', (req, res) => res.status(200).render('index'));
 
 app.post('/weather', (req, res) => {
   const apiKey = require('./sources/keys.json').API_KEY;
@@ -23,14 +23,12 @@ app.post('/weather', (req, res) => {
       const currentTemp = response.data.main.temp;
       const currentTempInCelsius = (currentTemp - 273.15).toFixed(1);
 
-      res.render('index', {
+      res.status(200).render('index', {
         weatherText: `It's ${currentTempInCelsius} °C in ${cityName}`
       });
-
     })
     .catch(err => {
-      res.status(400)
-      res.render('index', {weatherText: 'City is not found!'});
+      res.status(400).render('index', {weatherText: 'City is not found!'});
     })
 });
 
